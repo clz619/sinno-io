@@ -21,9 +21,10 @@ public interface AsyncDownloadDbHandler {
     void setAsyncDownloadTask(AsyncDownloadTask asyncDownloadTask);
 
     /**
-     * 清空
+     * 初始化下载状态，
+     * 断点续下
      */
-    void clear();
+    void init();
 
     /**
      * 获取头部数据
@@ -31,6 +32,13 @@ public interface AsyncDownloadDbHandler {
      * @return
      */
     String[] getHeader();
+
+    /**
+     * 总量
+     *
+     * @return
+     */
+    int count();
 
     /**
      * 查询
@@ -43,5 +51,11 @@ public interface AsyncDownloadDbHandler {
      * 刷新
      */
     void finish();
+
+    boolean isContinueDownload();
+
+    boolean isHasCreateFile();
+
+    boolean isHasSetHeader();
 
 }

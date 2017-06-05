@@ -15,6 +15,11 @@ public class AsyncDownloadTask {
     private long id;
 
     /**
+     *
+     */
+    private int type;
+
+    /**
      * 参数
      */
     private String params;
@@ -50,6 +55,14 @@ public class AsyncDownloadTask {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getParams() {
@@ -104,6 +117,7 @@ public class AsyncDownloadTask {
     public String toString() {
         return "AsyncDownloadTask{" +
                 "id=" + id +
+                ", type=" + type +
                 ", params='" + params + '\'' +
                 ", outPath='" + outPath + '\'' +
                 ", fileName='" + fileName + '\'' +

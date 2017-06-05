@@ -1,5 +1,6 @@
 package win.sinno.io.async.dl;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import win.sinno.io.async.dl.constant.AsyncDownloadTaskStatusEnum;
@@ -18,20 +19,24 @@ import java.util.List;
  */
 public class CsvAsyncDownloader implements AsyncDownloader {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CsvAsyncDownloader.class);
+    private static final Logger LOG = LoggerFactory.getLogger("download");
 
     private AsyncDownloadTask asyncDownloadTask;
 
     private AsyncDownloadDbHandler asyncDownloadDbHandler;
 
+    private static final int MAX_NUM_COUNT = 3;
+
+    //防止 数据 异常 导致死循环，如count后删除一些数据，导致select永远比count小
+    private int nullCount = 0;
 
     public CsvAsyncDownloader(AsyncDownloadTask asyncDownloadTask, AsyncDownloadDbHandler asyncDownloadDbHandler) {
 
         this.asyncDownloadTask = asyncDownloadTask;
 
+        //设置下载任务
         this.asyncDownloadDbHandler = asyncDownloadDbHandler;
         this.asyncDownloadDbHandler.setAsyncDownloadTask(asyncDownloadTask);
-
 
     }
 
@@ -42,7 +47,9 @@ public class CsvAsyncDownloader implements AsyncDownloader {
      */
     @Override
     public boolean isNeedDownload() {
-        return !isCancel() && !isDone();
+        return !isCancel()
+                && !isDone()
+                && (asyncDownloadTask.getTotalCount() > asyncDownloadTask.getIndex() && nullCount < MAX_NUM_COUNT);
     }
 
     /**
@@ -52,7 +59,7 @@ public class CsvAsyncDownloader implements AsyncDownloader {
      */
     @Override
     public boolean isCancel() {
-        return (asyncDownloadTask.getStatus() | AsyncDownloadTaskStatusEnum.CANCEL.getCode()) > 0;
+        return (asyncDownloadTask.getStatus() & AsyncDownloadTaskStatusEnum.CANCEL.getCode()) > 0;
     }
 
     /**
@@ -62,7 +69,7 @@ public class CsvAsyncDownloader implements AsyncDownloader {
      */
     @Override
     public boolean isDone() {
-        return (asyncDownloadTask.getStatus() | AsyncDownloadTaskStatusEnum.DONE.getCode()) > 0;
+        return (asyncDownloadTask.getStatus() & AsyncDownloadTaskStatusEnum.DONE.getCode()) > 0;
     }
 
     /**
@@ -71,28 +78,41 @@ public class CsvAsyncDownloader implements AsyncDownloader {
     @Override
     public void download() throws IOException {
 
-        asyncDownloadDbHandler.clear();
+        asyncDownloadDbHandler.init();
 
         CsvWriter csvWriter = new CsvWriter();
         csvWriter.setFileName(asyncDownloadTask.getFileName());
         csvWriter.setOutPath(asyncDownloadTask.getOutPath());
         csvWriter.setAppendMode(true);
-
         csvWriter.build();
 
-        String[] header = asyncDownloadDbHandler.getHeader();
-        csvWriter.append(header);
+        if (!asyncDownloadDbHandler.isHasSetHeader()) {
+            String[] header = asyncDownloadDbHandler.getHeader();
+            csvWriter.append(header);
+            csvWriter.flush();
+            csvWriter.newLine();
+        }
 
         while (isNeedDownload()) {
             List<String[]> dataArrayList = asyncDownloadDbHandler.select();
 
-            for (String[] dataArray : dataArrayList) {
-                // 添加数据
-                csvWriter.append(dataArray);
-                csvWriter.newLine();
+            if (CollectionUtils.isNotEmpty(dataArrayList)) {
+
+                asyncDownloadTask.setIndex(asyncDownloadTask.getIndex() + dataArrayList.size());
+
+                for (String[] dataArray : dataArrayList) {
+                    // 添加数据
+                    csvWriter.append(dataArray);
+                    csvWriter.newLine();
+                }
+
+                csvWriter.flush();
+
+            } else {
+                nullCount++;
             }
-            csvWriter.flush();
         }
+
         csvWriter.close();
 
         // 下载
