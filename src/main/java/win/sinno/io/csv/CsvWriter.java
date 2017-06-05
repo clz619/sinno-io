@@ -3,6 +3,7 @@ package win.sinno.io.csv;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import win.sinno.io.util.FileUtil;
 
 import java.io.*;
 import java.util.Iterator;
@@ -60,12 +61,15 @@ public class CsvWriter {
 
     public File build() throws IOException {
 
-        String filePath = null;
-        if (outPath.endsWith(File.separator)) {
-            filePath = outPath + fileName + ".csv";
-        } else {
-            filePath = outPath + File.separator + fileName + ".csv";
-        }
+//        String filePath = null;
+//        if (outPath.endsWith(File.separator)) {
+//            filePath = outPath + fileName + ".csv";
+//        } else {
+//            filePath = outPath + File.separator + fileName + ".csv";
+//        }
+
+        String filePath = FileUtil.getFilePath(outPath, fileName, ".csv");
+
         csvFile = new File(filePath);
         if (!csvFile.exists()) {
             File pathFile = csvFile.getParentFile();

@@ -89,8 +89,8 @@ public class CsvAsyncDownloader implements AsyncDownloader {
         if (!asyncDownloadDbHandler.isHasSetHeader()) {
             String[] header = asyncDownloadDbHandler.getHeader();
             csvWriter.append(header);
-            csvWriter.flush();
             csvWriter.newLine();
+            csvWriter.flush();
         }
 
         while (isNeedDownload()) {

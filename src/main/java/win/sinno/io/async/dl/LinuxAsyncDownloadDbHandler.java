@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import win.sinno.io.async.dl.dto.AsyncDownloadTask;
+import win.sinno.io.util.FileUtil;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -37,12 +38,14 @@ public abstract class LinuxAsyncDownloadDbHandler implements AsyncDownloadDbHand
         String fileName = getAsyncDownloadTask().getFileName();
         String outPath = getAsyncDownloadTask().getOutPath();
 
-        String filePath = null;
-        if (outPath.endsWith(File.separator)) {
-            filePath = outPath + fileName + ".csv";
-        } else {
-            filePath = outPath + File.separator + fileName + ".csv";
-        }
+//        String filePath = null;
+//        if (outPath.endsWith(File.separator)) {
+//            filePath = outPath + fileName + ".csv";
+//        } else {
+//            filePath = outPath + File.separator + fileName + ".csv";
+//        }
+
+        String filePath = FileUtil.getFilePath(outPath, fileName, ".csv");
 
         File file = new File(filePath);
 
