@@ -86,6 +86,11 @@ public class CsvWriter {
         return csvFile;
     }
 
+    /**
+     * http://baike.baidu.com/item/BOM/2790364
+     *
+     * @throws IOException
+     */
     public void setBom() throws IOException {
         write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
     }
