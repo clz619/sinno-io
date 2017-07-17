@@ -19,10 +19,11 @@ public class CsvWriterTest {
     @Test
     public void testFile() throws IOException {
 
-        CsvWriter csvWriter = new CsvWriter("D:\\data\\ddy_market_xls", "test");
+        CsvWriter csvWriter = new CsvWriter("/Users/clz/logs", "test");
         csvWriter.setAppendMode(true);
         csvWriter.build();
 
+        csvWriter.setBom();
         String[] header = new String[3];
         header[0] = "id";
         header[1] = "msg";
@@ -30,10 +31,18 @@ public class CsvWriterTest {
         csvWriter.append(header);
         csvWriter.newLine();
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             List<String> data = new ArrayList<>();
             data.add(i + "");
             data.add("hello,world \"你好 世界, !\"");
+            data.add(new Date().toString());
+            csvWriter.append(data);
+            csvWriter.newLine();
+        }
+        for (int i = 0; i < 10; i++) {
+            List<String> data = new ArrayList<>();
+            data.add(i + "");
+            data.add("【叮咚小方】欢迎注册叮咚云，请安排技术人员进行对接");
             data.add(new Date().toString());
             csvWriter.append(data);
             csvWriter.newLine();

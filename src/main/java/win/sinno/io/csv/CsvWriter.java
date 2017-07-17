@@ -86,6 +86,10 @@ public class CsvWriter {
         return csvFile;
     }
 
+    public void setBom() throws IOException {
+        write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
+    }
+
     public void append(String[] data) throws IOException {
 
         if (data == null || data.length == 0) {
