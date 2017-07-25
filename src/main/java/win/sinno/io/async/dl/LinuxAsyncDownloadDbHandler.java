@@ -38,13 +38,6 @@ public abstract class LinuxAsyncDownloadDbHandler implements AsyncDownloadDbHand
         String fileName = getAsyncDownloadTask().getFileName();
         String outPath = getAsyncDownloadTask().getOutPath();
 
-//        String filePath = null;
-//        if (outPath.endsWith(File.separator)) {
-//            filePath = outPath + fileName + ".csv";
-//        } else {
-//            filePath = outPath + File.separator + fileName + ".csv";
-//        }
-
         String filePath = FileUtil.getFilePath(outPath, fileName, ".csv");
 
         File file = new File(filePath);
