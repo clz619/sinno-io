@@ -9,10 +9,10 @@
 
 ## 解决方案  
 * 将同步下载方式，修改为异步下载，一次请求视为一个下载任务
-* 将一步完成生成的文件，分多步完成
+* 将一步完成生成的文件，分多步完成并提供断点续生成(避免100w数量级的文件，在生成90w时，系统重启重新生成)
 * 待任务生成完成后，再提供给用户进行下载
 
 ## 组成
 AsyncDownloadTask：异步下载任务  
-AsyncDownloader：异步下载器
-AsyncDownloadDbHandler：异步下载数据库处理器
+AsyncDownloader：异步下载器  
+AsyncDownloadDbHandler：异步下载数据库处理器  
