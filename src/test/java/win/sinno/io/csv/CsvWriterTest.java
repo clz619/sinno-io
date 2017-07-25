@@ -42,7 +42,7 @@ public class CsvWriterTest {
         for (int i = 0; i < 10; i++) {
             List<String> data = new ArrayList<>();
             data.add(i + "");
-            data.add("【叮咚小方】欢迎注册叮咚云，请安排技术人员进行对接");
+            data.add("的滴滴答答滴滴答答的哈哈哈哈哈哈哈哈哈哈哈");
             data.add(new Date().toString());
             csvWriter.append(data);
             csvWriter.newLine();
