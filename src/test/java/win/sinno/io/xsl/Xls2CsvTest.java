@@ -1,8 +1,8 @@
 package win.sinno.io.xsl;
 
-import org.junit.Test;
-
 import java.io.IOException;
+import org.junit.Test;
+import win.sinno.io.csv.CsvWriter;
 
 /**
  * xls 2 csv
@@ -13,11 +13,28 @@ import java.io.IOException;
  */
 public class Xls2CsvTest {
 
-    @Test
-    public void testXls2Csv() throws IOException {
-        String filename = "D:\\data\\ddy_market_xls\\10w.xls";
-        int minColumns = -1;
-        Xls2Csv xls2csv = new Xls2Csv(filename, minColumns);
-        xls2csv.process();
-    }
+  @Test
+  public void testXls2Csv() throws IOException {
+    CsvWriter csvWriter = new CsvWriter();
+    csvWriter.setCharset("utf-8");
+    csvWriter.setAppendMode(true);
+    csvWriter.setFileName("seller_send_coupon_0_52780");
+    csvWriter.setOutPath("/Users/chenlizhong/Documents/");
+    csvWriter.build();
+
+    String[] header = {"手机号", "昵称"};
+    csvWriter.append(header);
+    csvWriter.newLine();
+    csvWriter.flush();
+
+    String filename = "/Users/chenlizhong/Documents/seller_send_coupon_0_52780.xls";
+    int minColumns = -1;
+
+    Xls2Csv xls2csv = new Xls2Csv(filename, csvWriter, minColumns);
+
+    xls2csv.process();
+
+    csvWriter.flush();
+    csvWriter.close();
+  }
 }

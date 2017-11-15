@@ -27,7 +27,7 @@
         <version.junit>4.12</version.junit>
 
         <!--sinno-->
-        <version.sinno.common>1.0.2</version.sinno.common>
+        <version.sinno.common>1.0.6</version.sinno.common>
 
         <!--common-->
         <version.commons.lang3>3.4</version.commons.lang3>
