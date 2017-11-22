@@ -141,9 +141,6 @@ public class Xls2Csv implements HSSFListener {
             boundSheetRecords = BoundSheetRecord.orderByBofPosition(boundSheetRecordList);
           }
 
-//          output.println();
-//          output.println(
-//              boundSheetRecords[sheetIndex].getSheetname() + " [" + (sheetIndex + 1) + "]:");
         }
 
         break;
@@ -263,14 +260,12 @@ public class Xls2Csv implements HSSFListener {
 
     if (thisStr != null) {
       if (thisColumn > 0) {
-//        output.print(",");
         try {
           csvWriter.write(",");
         } catch (IOException e) {
           e.printStackTrace();
         }
       }
-//      output.print(thisStr);
       try {
         csvWriter.write(thisStr);
       } catch (IOException e) {
@@ -292,7 +287,6 @@ public class Xls2Csv implements HSSFListener {
           lastColumnNumber = 0;
         }
         for (int i = lastColumnNumber; i < minColumns; i++) {
-//          output.print(',');
           try {
             csvWriter.write(",");
           } catch (IOException e) {
@@ -302,7 +296,6 @@ public class Xls2Csv implements HSSFListener {
       }
 
       lastColumnNumber = -1;
-//      output.println();
       try {
         csvWriter.newLine();
       } catch (IOException e) {

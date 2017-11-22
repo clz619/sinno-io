@@ -39,10 +39,8 @@ public class Xlsx2Csv {
     private void outputMissingRows(int number) throws IOException {
       for (int i = 0; i < number; i++) {
         for (int j = 0; j < minColumns; j++) {
-//                    output.append(',');
           csvWriter.write(",");
         }
-//                output.append('\n');
         csvWriter.newLine();
       }
     }
@@ -65,14 +63,12 @@ public class Xlsx2Csv {
     public void endRow(int rowNum) {
       // Ensure the minimum number of columns
       for (int i = currentCol; i < minColumns; i++) {
-//                output.append(',');
         try {
           csvWriter.write(",");
         } catch (IOException e) {
           e.printStackTrace();
         }
       }
-//            output.append('\n');
       try {
         csvWriter.newLine();
       } catch (IOException e) {
@@ -86,7 +82,6 @@ public class Xlsx2Csv {
       if (firstCellOfRow) {
         firstCellOfRow = false;
       } else {
-//        output.append(',');
         try {
           csvWriter.write(",");
         } catch (IOException e) {
@@ -103,7 +98,6 @@ public class Xlsx2Csv {
       int thisCol = (new CellReference(cellReference)).getCol();
       int missedCols = thisCol - currentCol - 1;
       for (int i = 0; i < missedCols; i++) {
-//        output.append(',');
         try {
           csvWriter.write(",");
         } catch (IOException e) {
@@ -112,16 +106,6 @@ public class Xlsx2Csv {
       }
       currentCol = thisCol;
 
-//      // Number or string?
-//      try {
-//        //noinspection ResultOfMethodCallIgnored
-//        Double.parseDouble(formattedValue);
-//        output.append(formattedValue);
-//      } catch (NumberFormatException e) {
-//        output.append('"');
-//        output.append(formattedValue);
-//        output.append('"');
-//      }
       try {
         csvWriter.write(formattedValue);
       } catch (IOException e) {

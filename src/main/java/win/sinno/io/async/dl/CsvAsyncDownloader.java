@@ -123,7 +123,6 @@ public class CsvAsyncDownloader implements AsyncDownloader {
     @Override
     public void run() {
         try {
-
             download();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
