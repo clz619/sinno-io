@@ -8,8 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import win.sinno.io.util.FileUtil;
 
 /**
  * win.sinno.io.download.BufferedDownloader
@@ -36,6 +38,12 @@ public class BufferedDownloader implements IDownloader {
       bis = new BufferedInputStream(u.openStream());
 
       File file = new File(path);
+
+      File parent = file.getParentFile();
+      if (!parent.exists()) {
+        parent.mkdirs();
+      }
+
       fos = new FileOutputStream(file);
       bos = new BufferedOutputStream(fos);
 
