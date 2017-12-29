@@ -1,8 +1,12 @@
 package win.sinno.io.csv;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,15 +19,20 @@ import org.junit.Test;
  * @author admin@chenlizhong.cn
  * @date 2017/11/9
  */
-public class CsvFormatTest2 {
+public class CsvFormatTest_1211_1 {
 
-
-  private String OUT_PATH = "/Users/chenlizhong/Documents/output44";
-
+  private String OUT_PATH = "/Users/chenlizhong/Documents/dbg12";
   private CsvWriter csvWriter;
 
   private int idx = 0;
   private int pos = 0;
+
+  private File file;
+  private FileInputStream fis;
+  private DataInputStream dis;
+  private InputStreamReader isr;
+  private BufferedReader br;
+
 
   @Test
   public void format() throws IOException {
@@ -32,71 +41,40 @@ public class CsvFormatTest2 {
     SetArray mobiles = new SetArray();
     long st = System.currentTimeMillis();
 
-    String sourcePath2 = "/Users/chenlizhong/Documents/120w";
+    String sourcePath = "/Users/chenlizhong/Documents/大表哥数据.txt";
 
-    File file = new File(sourcePath2);
-    File[] childFiles = file.listFiles();
-    for (File cfile : childFiles) {
-      if (cfile.isDirectory()) {
-        File[] csvs = cfile.listFiles(new FileFilter() {
-          @Override
-          public boolean accept(File pathname) {
-            return pathname.getName().endsWith(".csv");
-          }
-        });
+    try {
+      file = new File(sourcePath);  // CSV文件路径
 
-        for (File csv : csvs) {
-          System.out.println(csv.getAbsolutePath());
+      fis = new FileInputStream(file);
 
-          int count = 0;
-          long ist = System.currentTimeMillis();
+      dis = new DataInputStream(fis);
+      isr = new InputStreamReader(dis);
+      br = new BufferedReader(isr);
 
-          String fileName = csv.getName().substring(0, csv.getName().length() - 4);
+      String[] lineArray = null;
+      String nick = null;
+      String mobile = null;
 
-          CsvReader csvReader = new CsvReader(csv.getParentFile().getAbsolutePath(), fileName,
-              "UTF-8");
-
-          csvReader.open();
-
-          String[] lineArray = null;
-          String nick = null;
-          String mobile = null;
-
-          String line = null;
-          int j = 0;
-          while ((line = csvReader.readLine()) != null
+      String line = null;
+      int j = 0;
+      while ((line = br.readLine()) != null
 //          && j < 100
-              ) {
-            lineArray = line.split(",");
-            if (lineArray.length < 2) {
-              continue;
-            }
+          ) {
+        mobile = line.trim();
 
-            nick = lineArray[1].trim();
-            mobile = lineArray[0].replaceAll("'", "").replaceAll("\"", "").trim();
+        lineArray = new String[1];
 
-            lineArray = new String[2];
+        lineArray[0] = mobile;
 
-            lineArray[0] = mobile;
-            lineArray[1] = nick;
+        lines.add(lineArray);
 
-            if (isMobile(mobile)
-                && !mobiles.isContains(mobile)
-                ) {
-              mobiles.add(mobile);
-              lines.add(lineArray);
-              count++;
-            }
-
-            j++;
-          }
-          csvReader.close();
-          long iet = System.currentTimeMillis();
-
-          System.out.println(".csv 2 count:" + count + " useTs:" + (iet - ist) + "ms");
-        }
+        j++;
 
       }
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
     }
 
     mobiles = null;
@@ -134,7 +112,7 @@ public class CsvFormatTest2 {
 
   private CsvWriter getNowCsvWriter() throws IOException {
 
-    int step = 960000;
+    int step = 200000;
     if (csvWriter != null && (pos % step) != 0) {
       return csvWriter;
 

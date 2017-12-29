@@ -141,7 +141,6 @@ public class CsvFormatTest_1110_3 {
       csvWriter.setCharset("gb18030");
       csvWriter.setAppendMode(true);
       csvWriter.build();
-      csvWriter.setBom();
 
       String[] header = {"手机号", "收货人(可选填)"};
       csvWriter.append(header);

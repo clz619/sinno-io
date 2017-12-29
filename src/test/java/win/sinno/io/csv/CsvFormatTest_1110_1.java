@@ -310,7 +310,6 @@ public class CsvFormatTest_1110_1 {
       csvWriter.setAppendMode(true);
       csvWriter.setCharset("GB18030");
       csvWriter.build();
-      csvWriter.setBom();
 
       String[] header = {"手机号", "收货人(可选填)"};
       csvWriter.append(header);

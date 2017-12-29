@@ -70,7 +70,7 @@ public class Xlsx2CsvTest {
   }
 
 
-  public static String OUT_PATH2 = "/Users/chenlizhong/Documents/lengmo11csv/";
+  public static String OUT_PATH2 = "/Users/chenlizhong/Documents/lengmo11csv1/";
 
   // lengmo11csv
   @Test
@@ -81,29 +81,31 @@ public class Xlsx2CsvTest {
 
     int[] iarray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-    for (int i : iarray) {
-      String filePath = "/Users/chenlizhong/Documents/冷漠双十一/双十一" + i + ".xlsx";
+//    for (int i : iarray) {
+//      String filePath = "/Users/chenlizhong/Documents/冷漠双十一/双十一" + i + ".xlsx";
+    String filePath = "/Users/chenlizhong/Documents/冷漠双十一/双十一1.xlsx";
 
-      CsvWriter csvWriter = new CsvWriter();
-      csvWriter.setFileName("双十一" + i);
-      csvWriter.setOutPath(OUT_PATH2);
-      csvWriter.setAppendMode(true);
-      csvWriter.build();
-      csvWriter.setBom();
+    CsvWriter csvWriter = new CsvWriter();
+//    csvWriter.setFileName("双十一" + i);
+    csvWriter.setFileName("双十一1");
+    csvWriter.setOutPath(OUT_PATH2);
+    csvWriter.setAppendMode(true);
+    csvWriter.build();
+    csvWriter.setBom();
 
 //      String[] header = {"手机号", "昵称"};
 //      csvWriter.append(header);
 //      csvWriter.newLine();
 //      csvWriter.flush();
 
-      int minColumns = -1;
+    int minColumns = -1;
 
-      OPCPackage p = OPCPackage.open(filePath, PackageAccess.READ);
-      Xlsx2Csv xlsx2csv = new Xlsx2Csv(p, csvWriter, minColumns);
-      xlsx2csv.process();
-      p.close();
-      csvWriter.close();
-    }
+    OPCPackage p = OPCPackage.open(filePath, PackageAccess.READ);
+    Xlsx2Csv xlsx2csv = new Xlsx2Csv(p, csvWriter, minColumns);
+    xlsx2csv.process();
+    p.close();
+    csvWriter.close();
+//    }
     long et = System.currentTimeMillis();
 
     System.out.println("end." + (et - bt));

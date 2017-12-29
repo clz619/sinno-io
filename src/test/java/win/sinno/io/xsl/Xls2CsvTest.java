@@ -15,10 +15,11 @@ public class Xls2CsvTest {
 
   @Test
   public void testXls2Csv() throws IOException {
+    Long bt = System.currentTimeMillis();
     CsvWriter csvWriter = new CsvWriter();
     csvWriter.setCharset("utf-8");
     csvWriter.setAppendMode(true);
-    csvWriter.setFileName("seller_send_coupon_0_52780");
+    csvWriter.setFileName("1111");
     csvWriter.setOutPath("/Users/chenlizhong/Documents/");
     csvWriter.build();
 
@@ -36,5 +37,8 @@ public class Xls2CsvTest {
 
     csvWriter.flush();
     csvWriter.close();
+    Long et = System.currentTimeMillis();
+
+    System.out.println(et - bt);
   }
 }
