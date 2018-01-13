@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +26,17 @@ public class BufferedDownloader implements IDownloader {
 
   private int byteSize = 4096;
 
+  public static final Long DEFAULT_TIMEOUT = 10000l;
+
   @Override
   public void download(String url, String path) {
 
+    download(url, path, DEFAULT_TIMEOUT);
+
+  }
+
+  @Override
+  public void download(String url, String path, Long timeout) {
     URL u = null;
     BufferedInputStream bis = null;
     FileOutputStream fos = null;
@@ -35,7 +44,12 @@ public class BufferedDownloader implements IDownloader {
 
     try {
       u = new URL(url);
-      bis = new BufferedInputStream(u.openStream());
+
+      URLConnection conn = u.openConnection();
+
+      conn.setConnectTimeout(timeout != null ? timeout.intValue() : DEFAULT_TIMEOUT.intValue());
+
+      bis = new BufferedInputStream(conn.getInputStream());
 
       File file = new File(path);
 
@@ -85,8 +99,5 @@ public class BufferedDownloader implements IDownloader {
       }
 
     }
-
-
   }
-
 }

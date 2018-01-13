@@ -10,5 +10,7 @@ package win.sinno.io.download;
 public interface IDownloader {
 
   void download(String url, String path);
-  
+
+  void download(String url, String path, Long timeout);
+
 }
