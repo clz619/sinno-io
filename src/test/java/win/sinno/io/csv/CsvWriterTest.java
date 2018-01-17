@@ -17,7 +17,7 @@ public class CsvWriterTest {
 
   @Test
   public void testFile() throws IOException {
-    CsvWriter csvWriter = new CsvWriter("/Users/chenlizhong/Documents/output-mobiles", "test");
+    CsvWriter csvWriter = new CsvWriter("/Users/chenlizhong/Documents/output-mobiles", "test1");
     csvWriter.setAppendMode(true);
     csvWriter.build();
 
