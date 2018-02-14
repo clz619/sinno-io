@@ -27,7 +27,7 @@ public class GlobalBlackFormatTest {
     csvReader.open();
 
     CsvWriter csvWriter = new CsvWriter();
-    csvWriter.setFileName("wk_black_only_mobile");
+    csvWriter.setFileName("wk_black_only_mobile1");
     csvWriter.setOutPath(targetPath);
     csvWriter.setCharset("UTF-8");
     csvWriter.setAppendMode(true);
