@@ -23,7 +23,7 @@ public class FileReader {
 
   private String filepath;
   private String filename;
-  private String charset;
+  private String charset = DEFAULT_CHARSET;
 
   private File file;
   private FileInputStream fis;
@@ -34,6 +34,11 @@ public class FileReader {
   private AtomicBoolean isOpen = new AtomicBoolean(false);
 
   public FileReader() {
+  }
+
+  public FileReader(String filepath, String filename) {
+    this.filepath = filepath;
+    this.filename = filename;
   }
 
   public FileReader(String filepath, String filename, String charset) {
