@@ -59,6 +59,7 @@ public class FileByteReader implements Closeable {
     return bos.toByteArray();
   }
 
+
   @Override
   public void close() throws IOException {
     if (isOpen.compareAndSet(true, false)) {

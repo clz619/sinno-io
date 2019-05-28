@@ -63,6 +63,10 @@ public class FileByteWriter implements Closeable {
     fos.write(bytes, off, len);
   }
 
+  public void flush() throws IOException {
+    fos.flush();
+  }
+
   @Override
   public void close() throws IOException {
     if (isOpen.compareAndSet(true, false)) {
