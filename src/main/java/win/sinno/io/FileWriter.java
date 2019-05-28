@@ -1,11 +1,15 @@
 package win.sinno.io;
 
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,17 +22,19 @@ import win.sinno.io.util.FileUtil;
  * @version : 1.0
  * @since : 2017-05-27 14:23.
  */
-public class FileWriter {
+public class FileWriter implements Closeable {
 
   private static final Logger LOG = LoggerFactory.getLogger(FileWriter.class);
-
-  private static final String DEFAULT_CHARSET = "UTF-8";
 
   public static final String UTF_8 = "UTF-8";
 
   public static final String GB2312 = "GB2312";
 
-  private boolean appendMode;
+  private static final String DEFAULT_CHARSET = UTF_8;
+
+  private AtomicBoolean openFlag = new AtomicBoolean();
+
+  private boolean appendMode = true;
   private String outPath;
   private String fileName;
   private String charset;
@@ -84,11 +90,17 @@ public class FileWriter {
       file.createNewFile();
     }
 
-    fos = new FileOutputStream(file, true);
-    osw = new OutputStreamWriter(fos, charset == null ? DEFAULT_CHARSET : charset);
-    bw = new BufferedWriter(osw, 1024);
+    open();
 
     return file;
+  }
+
+  private void open() throws FileNotFoundException, UnsupportedEncodingException {
+    if (openFlag.compareAndSet(false, true)) {
+      fos = new FileOutputStream(file, appendMode);
+      osw = new OutputStreamWriter(fos, charset == null ? DEFAULT_CHARSET : charset);
+      bw = new BufferedWriter(osw, 1024);
+    }
   }
 
   public void write(List<String> list) throws IOException {
@@ -113,15 +125,29 @@ public class FileWriter {
     bw.flush();
   }
 
+  @Override
   public void close() throws IOException {
-    if (bw != null) {
-      bw.close();
-    }
-    if (osw != null) {
-      osw.close();
-    }
-    if (fos != null) {
-      fos.close();
+
+    if (openFlag.compareAndSet(true, false)) {
+
+      if (bw != null) {
+        try {
+          flush();
+        } catch (IOException e) {
+          LOG.error(e.getMessage(), e);
+        }
+
+        bw.close();
+      }
+
+      if (osw != null) {
+        osw.close();
+      }
+
+      if (fos != null) {
+        fos.close();
+      }
+
     }
   }
 
