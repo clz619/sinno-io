@@ -27,7 +27,7 @@
   <properties>
 
     <!--unit-->
-    <version.junit>4.12</version.junit>
+    <version.junit>4.13.1</version.junit>
 
     <!--sinno-->
     <version.sinno.common>1.0.6</version.sinno.common>
