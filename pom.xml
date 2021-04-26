@@ -36,7 +36,7 @@
     <version.commons.lang3>3.4</version.commons.lang3>
     <version.commons.collections4>4.1</version.commons.collections4>
     <version.commons.codec>1.10</version.commons.codec>
-    <version.commons.io>2.6</version.commons.io>
+    <version.commons.io>2.7</version.commons.io>
 
     <!--io-->
     <version.poi>3.16</version.poi>
